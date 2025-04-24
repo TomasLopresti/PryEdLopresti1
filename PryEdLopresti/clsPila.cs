@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace PryEdLopresti
 {
-    internal class clsCola
+    internal class clsPila
     {
         private clsNodo pri;
         private clsNodo ult;
@@ -42,7 +42,7 @@ namespace PryEdLopresti
 
         public void Eliminar()
         {
-            if ( primero == ultimo)
+            if (primero == ultimo)
             {
                 pri = null;
                 ult = null;
@@ -52,7 +52,26 @@ namespace PryEdLopresti
                 pri = primero.Siguiente;
             }
         }
-
+        public void Agregar()
+        {
+            StreamReader AD = new StreamReader("Cola.csv");
+            String dato = "";
+            dato = AD.ReadLine(); //Titulo
+            dato = AD.ReadLine(); //Reglon vacio
+            dato = AD.ReadLine(); //Titulos de columna
+            dato = AD.ReadLine(); //Primera fila con datos
+            while (dato != null)
+            {
+                clsNodo Persona = new clsNodo();
+                String[] datos = dato.Split(';');
+                Persona.codigo = Convert.ToInt32(datos[0]);
+                Persona.Nombre = datos[1];
+                Persona.Tramite = datos[2];
+                Agregar(Persona);
+                dato = AD.ReadLine();
+            }
+            AD.Close();
+        }
         public void Recorrer(DataGridView Grilla)
         {
             clsNodo aux = primero;
@@ -63,7 +82,17 @@ namespace PryEdLopresti
                 aux = aux.Siguiente;
             }
         }
-
+        public void Recorrer(ListBox Lista)
+        {
+            clsNodo aux = primero;
+            Lista.Items.Clear();
+            while (aux != null)
+            {
+                Lista.Items.Add(aux.codigo + " " + aux.Nombre + " " +
+                aux.Tramite);
+                aux = aux.Siguiente;
+            }
+        }
         public void Recorrer(ComboBox Combo)
         {
             clsNodo aux = primero;
@@ -74,24 +103,13 @@ namespace PryEdLopresti
                 aux = aux.Siguiente;
             }
         }
-
-        public void Recorrer(ListBox Lista)
-        {
-            clsNodo aux = primero;
-            Lista.Items.Clear();
-            while (aux != null)
-            {
-                Lista.Items.Add(aux.codigo);
-                aux = aux.Siguiente;
-            }
-        }
-
         public void Recorrer()
         {
             clsNodo aux = primero;
-            StreamWriter AD = new StreamWriter("Cola.csv", false, Encoding.UTF8);
-            AD.WriteLine("lista de espera\n");
-            AD.WriteLine("Codigo;Nombre;Tramite");
+            StreamWriter AD = new StreamWriter("Pila.csv", false,
+            Encoding.UTF8);
+            AD.WriteLine("Lista de personas\n");
+            AD.WriteLine("Código;Nombre;Trámite");
             while (aux != null)
             {
                 AD.Write(aux.codigo);
@@ -101,32 +119,27 @@ namespace PryEdLopresti
                 AD.WriteLine(aux.Tramite);
                 aux = aux.Siguiente;
             }
-            AD.Close();   
+            AD.Close();
+
         }
-
-        public void Agretgar()
+        public void Recorrer(String NmmbreArchivo)
         {
-            StreamReader AD = new StreamReader("Cola.csv");
-            string dato = "";
-            dato = AD.ReadLine();
-            dato = AD.ReadLine();
-            dato = AD.ReadLine();
-            dato = AD.ReadLine();
-            while (dato != null)
+            clsNodo aux = primero;
+            StreamWriter AD = new StreamWriter(NmmbreArchivo, false,
+            Encoding.UTF8);
+            AD.WriteLine("Lista de personas\n");
+            AD.WriteLine("Código;Nombre;Trámite");
+            while (aux != null)
             {
-                clsNodo Persona = new clsNodo();
-                string[] datos = dato.Split(';');
-                Persona.codigo = Convert.ToInt32(datos[0]);
-                Persona.Nombre = datos[1];
-                Persona.Tramite = datos[2];
-
-                Agregar(Persona);
-                dato = AD.ReadLine();
-
+                AD.Write(aux.codigo);
+                AD.Write(";");
+                AD.Write(aux.Nombre);
+                AD.Write(";");
+                AD.WriteLine(aux.Tramite);
+                aux = aux.Siguiente;
             }
-            AD.Close ();
+            AD.Close();
         }
 
     }
-    
 }

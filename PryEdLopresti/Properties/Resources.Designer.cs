@@ -63,6 +63,16 @@ namespace PryEdLopresti.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap descarga {
+            get {
+                object obj = ResourceManager.GetObject("descarga", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Imagen_de_WhatsApp_2025_04_03_a_las_15_32_50_253eb1d6 {
             get {
                 object obj = ResourceManager.GetObject("Imagen de WhatsApp 2025-04-03 a las 15.32.50_253eb1d6", resourceCulture);

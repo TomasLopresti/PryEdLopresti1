@@ -8,48 +8,61 @@ using System.Windows.Forms;
 
 namespace PryEdLopresti
 {
-    internal class clsCola
+    internal class clsListaSimple
     {
         private clsNodo pri;
-        private clsNodo ult;
-
 
         public clsNodo primero
         {
             get { return pri; }
             set { pri = value; }
         }
-
-        public clsNodo ultimo
-        {
-            get { return ult; }
-            set { ult = value; }
-        }
-
-        public void Agregar(clsNodo Nuevo)
+        public void Agregar(clsNodo nuevo)
         {
             if (primero == null)
             {
-                primero = Nuevo;
-                ultimo = Nuevo;
+                primero = nuevo; 
             }
             else
             {
-                ultimo.Siguiente = Nuevo;
-                ultimo = Nuevo;
+                if (nuevo.codigo <= primero.codigo)
+                {
+                    nuevo.Siguiente = primero;
+                    primero = nuevo;
+                }
+                else
+                {
+                    clsNodo aux = primero;
+                    clsNodo ant = primero;
+                    while (aux != null && nuevo.codigo > aux.codigo)
+                    {
+                        ant = aux;
+                        aux = aux.Siguiente;
+                    }
+                    ant.Siguiente = nuevo;
+                    nuevo.Siguiente = aux;
+
+
+                }
             }
         }
 
-        public void Eliminar()
+        public void Eliminar(Int32 codigo)
         {
-            if ( primero == ultimo)
+            if (primero.codigo == codigo)
             {
-                pri = null;
-                ult = null;
+                primero = primero.Siguiente;
             }
             else
             {
-                pri = primero.Siguiente;
+                clsNodo ant = primero;
+                clsNodo aux = primero;
+                while (aux.codigo != codigo)
+                {
+                    ant = aux;
+                    aux = aux.Siguiente;
+                }
+                ant.Siguiente = aux.Siguiente;
             }
         }
 
@@ -63,33 +76,30 @@ namespace PryEdLopresti
                 aux = aux.Siguiente;
             }
         }
-
-        public void Recorrer(ComboBox Combo)
+        public void Recorrer(ListBox lista)
         {
             clsNodo aux = primero;
-            Combo.Items.Clear();
+            lista.Items.Clear();
             while (aux != null)
             {
-                Combo.Items.Add(aux.Nombre);
+                lista.Items.Add(aux.codigo);
                 aux = aux.Siguiente;
             }
         }
-
-        public void Recorrer(ListBox Lista)
+        public void Recorrer(ComboBox combo)
         {
             clsNodo aux = primero;
-            Lista.Items.Clear();
+            combo.Items.Clear();
             while (aux != null)
             {
-                Lista.Items.Add(aux.codigo);
+                combo.Items.Add(aux.codigo);
                 aux = aux.Siguiente;
             }
         }
-
         public void Recorrer()
         {
             clsNodo aux = primero;
-            StreamWriter AD = new StreamWriter("Cola.csv", false, Encoding.UTF8);
+            StreamWriter AD = new StreamWriter("ListaSimple.csv", false, Encoding.UTF8);
             AD.WriteLine("lista de espera\n");
             AD.WriteLine("Codigo;Nombre;Tramite");
             while (aux != null)
@@ -101,32 +111,7 @@ namespace PryEdLopresti
                 AD.WriteLine(aux.Tramite);
                 aux = aux.Siguiente;
             }
-            AD.Close();   
+            AD.Close();
         }
-
-        public void Agretgar()
-        {
-            StreamReader AD = new StreamReader("Cola.csv");
-            string dato = "";
-            dato = AD.ReadLine();
-            dato = AD.ReadLine();
-            dato = AD.ReadLine();
-            dato = AD.ReadLine();
-            while (dato != null)
-            {
-                clsNodo Persona = new clsNodo();
-                string[] datos = dato.Split(';');
-                Persona.codigo = Convert.ToInt32(datos[0]);
-                Persona.Nombre = datos[1];
-                Persona.Tramite = datos[2];
-
-                Agregar(Persona);
-                dato = AD.ReadLine();
-
-            }
-            AD.Close ();
-        }
-
     }
-    
 }
