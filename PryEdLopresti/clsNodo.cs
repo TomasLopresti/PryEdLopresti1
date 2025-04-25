@@ -14,6 +14,8 @@ namespace PryEdLopresti
         private string nom;
         private string tram;
         private clsNodo sig;
+        private clsNodo ant;
+       
 
         public Int32 codigo
         {
@@ -39,7 +41,17 @@ namespace PryEdLopresti
             set { sig = value; }
         }
 
-
-
+        public clsNodo izuierdo
+        {
+            get { return ant; }
+            set { ant = value; }
+        }
+        public clsNodo derecho
+        {
+            get { return sig; }
+            set { sig = value; }
+        }
     }
+
+}
 }
